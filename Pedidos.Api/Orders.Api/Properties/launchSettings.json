@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Default": {
+      "commandName": "Project",
+      "applicationUrl": "https://localhost:5021;http://localhost:5020",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "applicationConfig__ConnectionStrings__DefaultConnection": "mongodb://root:123456@localhost:27017/orders?authSource=admin",
+        "Repository__MongoDB__DbName": "Orders"
+      }
+    }
+  }
+}

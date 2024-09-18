@@ -1,0 +1,12 @@
+{
+    "logging": {
+        "applicationInsights": {
+            "enableLiveMetricsFilters": true,
+            "samplingSettings": {
+                "isEnabled": true,
+                "excludedTypes": "Request"
+            }
+        }
+    },
+    "version": "2.0"
+}
