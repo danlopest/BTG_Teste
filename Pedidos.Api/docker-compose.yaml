@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: C:\Users\danilo.pereira\source\Curso\Pedidos.Api
+    container_name: order_app
+    restart: unless-stopped
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQ__Host=rabbitmq
+      - MongoDB__ConnectionString=mongodb://mongo:27017
+    depends_on:
+      - rabbitmq
+      - mongo
+      - functions
+
+  functions:
+    build:
+      context: C:\Users\danilo.pereira\source\Curso\ListaPedidos.Function
+    container_name: order_function
+    restart: unless-stopped
+    ports:
+      - "7071:80"
+    environment:
+      - AzureWebJobsStorage=UseDevelopmentStorage=true
+      - AzureWebJobsDashboard=UseDevelopmentStorage=true
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  rabbitmq:
+    image: rabbitmq:3.8.14-management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbitmq-definitions.json:/etc/rabbitmq/definitions.json:ro
+
+  mongo:
+    image: mongo:4.4.4
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: orders
